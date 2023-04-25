@@ -17,7 +17,7 @@ const m = multer({
       cb(null, "folder/");
     },
     filename: function (req, file, cb) {
-      console.log(req, file, cb);
+      //   console.log(req, file, cb);
       cb(null, Date.now() + file.originalname);
     },
   }),
@@ -25,10 +25,17 @@ const m = multer({
 
 server.post("/upload", m.array("image", 5), (req: Request, res: Response) => {
   const files = req.files as Express.Multer.File[];
-  for (const i in files) {
-    console.log(files[i]);
+  for (const value of files) {
+    console.log(value);
   }
+  //   for (const i in files) {
+  //     console.log(files[i].filename);
+  //   }
   res.send(true);
+});
+
+server.get("/ping", (req: Request, res: Response) => {
+  res.send("pong!");
 });
 
 server.listen(PORT, () => {

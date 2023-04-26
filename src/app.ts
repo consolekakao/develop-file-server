@@ -12,6 +12,7 @@ const checkDir = () => {
 };
 
 const m = multer({
+  limits: { fieldSize: 5 * 1024 * 1024 },
   storage: multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, "folder/");
@@ -28,9 +29,7 @@ server.post("/upload", m.array("image", 5), (req: Request, res: Response) => {
   for (const value of files) {
     console.log(value);
   }
-  //   for (const i in files) {
-  //     console.log(files[i].filename);
-  //   }
+
   res.send(true);
 });
 

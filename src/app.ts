@@ -8,41 +8,40 @@ import loginRouter from "./login/router.js";
 import { body, validationResult } from "express-validator";
 
 const server = express();
-const router = express.Router();
 const PORT = 5555; //PORT SETTING
 server.use(express.json());
-
 server.use("/upload", uploadRouter);
 server.use("/login", loginRouter);
 
-const validate = [
-  body("name", "이름없음").notEmpty(),
-  body("price", "가격없음").notEmpty(),
-];
+const validate = (schemas: any) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    await Promise.all(schemas.map((schema: any) => schema.run(req)));
 
-const errhandle = (req: Request, res: Response, next: NextFunction) => {
-  const errors = validationResult(req);
-  if (errors.isEmpty()) {
-    return next();
-  }
-  return res.status(400).json({ message: errors.array()[0].msg });
+    const result = validationResult(req);
+    if (result.isEmpty()) {
+      return next();
+    }
+
+    const errors = result.array();
+    return res.send(errors);
+  };
+};
+const props = (columnsData: string[]) => {
+  return columnsData.map((coulmn: string) => {
+    return body(coulmn, `${coulmn} is empty`).notEmpty();
+  });
 };
 
-server.post(
-  "/ping",
-  validate,
-  errhandle,
-  (req: Request, res: Response, next: NextFunction) => {
-    const errors = validationResult(req).array();
+server.post("/ping", (req: Request, res: Response) => {
+  res.send("pong!");
+});
 
-    if (errors.length) {
-      res.send(errors);
-      return;
-    }
-    next();
-  },
+server.post(
+  "/validate",
+  validate(props(["writer", "price", "title"])),
   (req: Request, res: Response) => {
-    res.send("pong!");
+    // console.log(req.body);
+    res.send("pass validate!");
   }
 );
 

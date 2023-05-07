@@ -4,7 +4,9 @@ const router = express.Router();
 
 router.post("/", (req: Request, res: Response) => {
   console.log(req.body);
-  res.send("www");
+  res.send({
+    result: true,
+  });
 });
 
 export default router;

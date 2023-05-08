@@ -6,6 +6,7 @@ import fs from "fs";
 import uploadRouter from "./fileupload/upload.js";
 import loginRouter from "./login/router.js";
 import { body, validationResult } from "express-validator";
+import { mysql } from "./mysql/mysql.js";
 
 const server = express();
 const PORT = 5555; //PORT SETTING

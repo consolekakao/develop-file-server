@@ -1,16 +1,16 @@
 import { Response } from "express";
 import mysql from "mysql2";
 
-export const getConnection = async (callback: any, res: Response) => {
-  const pool = mysql.createPool({
-    host: process.env.MYSQL_HOST,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DATABASE,
-    port: 3306,
-    connectTimeout: 5000,
-  });
+const pool = mysql.createPool({
+  host: process.env.MYSQL_HOST,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE,
+  port: 3306,
+  connectTimeout: 5000,
+});
 
+export const getConnection = async (callback: any, res: Response) => {
   pool.getConnection((err, conn) => {
     try {
       if (err) {
@@ -19,6 +19,7 @@ export const getConnection = async (callback: any, res: Response) => {
       }
       callback(conn);
       conn.release();
+      console.log("aaaaa");
     } catch (err) {
       console.log(err);
       return;

@@ -1,7 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
-import multer from "multer";
-import fs from "fs";
-// import { checkDir, m } from "./fileupload/upload";
+import morgan from "morgan";
 import config from "dotenv";
 import uploadRouter from "./fileupload/upload.js";
 import loginRouter from "./login/router.js";
@@ -12,6 +10,8 @@ config.config();
 const server = express();
 const PORT = 5555; //PORT SETTING
 server.use(express.json());
+server.use(morgan("short"));
+
 server.use("/upload", uploadRouter);
 server.use("/login", loginRouter);
 server.use("/user", userRouter);

@@ -9,3 +9,7 @@ const router = express.Router();
 router.use("/kakao", kakaoLogin);
 
 export default router;
+// id
+// nickname
+// gender
+// email

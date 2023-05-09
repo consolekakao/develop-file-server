@@ -1,6 +1,7 @@
 import { Response } from "express";
 import mysql from "mysql2";
-
+import config from "dotenv";
+config.config();
 const pool = mysql.createPool({
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
@@ -19,7 +20,6 @@ export const getConnection = async (callback: any, res: Response) => {
       }
       callback(conn);
       conn.release();
-      console.log("aaaaa");
     } catch (err) {
       console.log(err);
       return;
